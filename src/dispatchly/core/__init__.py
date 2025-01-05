@@ -4,16 +4,32 @@ import types
 from typing import *
 
 import tofunc
+from argshold import FrozenArgumentHolder
+from datarepr import datarepr
 
-__all__ = ["singledispatch"]
+__all__ = ["dispatch"]
 
 
-def identity(value, /):
+def dispatch(old: Any, /) -> Any:
+    return Data(old).ans
+
+
+def identity(value: Any, /) -> Any:
     return value
 
 
-def singledispatch(old, /):
-    return Data(old).ans
+def ismatch(pre: FrozenArgumentHolder, post: FrozenArgumentHolder) -> bool:
+    if len(pre.args) > len(post.args):
+        return False
+    for x, y in zip(pre.args, post.args):
+        if not isinstance(y, x):
+            return False
+    for k, v in pre.kwargs.items():
+        if k not in post.kwargs:
+            return False
+        if not isinstance(post.kwargs[k], v):
+            return False
+    return True
 
 
 @dataclasses.dataclass(frozen=True)
@@ -37,13 +53,14 @@ class Data:
     def __init__(self, old: Any) -> None:
         self.ans = self.makeans(old)
 
-    def ans_1(self, arg: Any, /, *args: Any, **kwargs: Any) -> Any:
-        variant = self.getvariant(arg)
-        return variant(arg, *args, **kwargs)
+    def ans_1(self, *args: Any, **kwargs: Any) -> Any:
+        post = FrozenArgumentHolder(*args, **kwargs)
+        variant = self.getvariant(post)
+        return holder.call(variant)
 
-    def getvariant(self, arg: Any) -> Any:
-        for key, value in self.ans.registry.items():
-            if isinstance(arg, key):
+    def getvariant(self, post: FrozenArgumentHolder) -> Any:
+        for pre, variant in self.ans.registry.items():
+            if ismatch(pre=pre, post=post):
                 return value
         return self.ans.default
 
@@ -65,11 +82,14 @@ class Data:
         return register
 
 
-@dataclasses.dataclass
 class Register:
-    ans: Any
-    key: Any
-
     def __call__(self, value: Any) -> Any:
         self.ans.registry[self.key] = Unpack.byValue(value).func
         return self.ans
+
+    def __init__(self, ans: Any, /, *args: Any, **kwargs: Any) -> None:
+        self.ans = ans
+        self.key = FrozenArgumentHolder(*args, **kwargs)
+
+    def __repr__(self) -> str:
+        return datarepr(type(self).__name__, ans=self.ans, key=self.key)
