@@ -9,19 +9,21 @@ authors = [
     { email = "johannes-programming@mailfence.com", name = "Johannes" },
 ]
 classifiers = [
-    "Development Status :: 1 - Planning",
+    "Development Status :: 2 - Pre-Alpha",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
 ]
-dependencies = []
+dependencies = [
+    "tofunc>=1.0.0",
+]
 description = "dispatchly"
 keywords = []
 name = "dispatchly"
 readme = "README.rst"
-requires-python = ">=3.12.7"
-version = "0.0.0.dev0"
+requires-python = ">=3.8"
+version = "0.0.1.dev0"
 
 [project.license]
 file = "LICENSE.txt"
