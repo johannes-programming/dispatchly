@@ -20,7 +20,26 @@
                     <dd id="installCorpus"></dd>
                     <dt id="example">Example</dt>
                     <dd id="exampleCorpus">
-                        <pre class="block"><code></code></pre>
+                        <pre class="block"><code>from dispatchly import singledispatch
+
+@singledispatch
+def fun(arg, verbose=False):
+    if verbose:
+        print("Let me just say,", end=" ")
+    print(arg)
+
+@fun.register(int)
+def fun(arg: int, verbose=False):
+    if verbose:
+        print("Strength in numbers, eh?", end=" ")
+    print(arg)
+
+@fun.register(list)
+def fun(arg: list, verbose=False):
+    if verbose:
+        print("Enumerate this:")
+    for i, elem in enumerate(arg):
+        print(i, elem)</code></pre>
                     </dd>
                     <dt id="testing">Testing</dt>
                     <dd id="testingCorpus"></dd>
