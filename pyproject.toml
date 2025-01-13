@@ -21,12 +21,12 @@ dependencies = [
     "datarepr>=1.0.0",
     "tofunc>=1.0.0",
 ]
-description = "dispatchly"
+description = "This project provides an alternative to the singledispatch decorator from functools."
 keywords = []
 name = "dispatchly"
 readme = "README.rst"
 requires-python = ">=3.8"
-version = "0.0.6.dev0+local.1"
+version = "0.0.6.dev0+local.2"
 
 [project.license]
 file = "LICENSE.txt"
