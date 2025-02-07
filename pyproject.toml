@@ -16,6 +16,7 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
+    "Typing :: Typed",
 ]
 dependencies = [
     "datarepr>=1.0.0",
@@ -25,8 +26,8 @@ description = "This project provides an alternative to the singledispatch decora
 keywords = []
 name = "dispatchly"
 readme = "README.rst"
-requires-python = ">=3.8"
-version = "0.0.6.dev0+local.2"
+requires-python = ">=3.11"
+version = "0.0.6.dev0+local.3"
 
 [project.license]
 file = "LICENSE.txt"
@@ -34,5 +35,5 @@ file = "LICENSE.txt"
 [project.urls]
 Documentation = "https://dispatchly.johannes-programming.online/"
 Download = "https://pypi.org/project/dispatchly/#files"
-Index = "https://pypi.org/project/dispatchly"
-Source = "https://github.com/johannes-programming/dispatchly"
+Index = "https://pypi.org/project/dispatchly/"
+Source = "https://github.com/johannes-programming/dispatchly/"
