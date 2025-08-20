@@ -50,21 +50,21 @@ class Unpack:
 
 
 class Data:
-    def __init__(self, old: Any) -> None:
+    def __init__(self: Self, old: Any) -> None:
         self.ans = self.makeans(old)
 
-    def ans_1(self, *args: Any, **kwargs: Any) -> Any:
+    def ans_1(self: Self, *args: Any, **kwargs: Any) -> Any:
         post = FrozenArgumentHolder(*args, **kwargs)
         variant = self.getvariant(post)
         return holder.call(variant)
 
-    def getvariant(self, post: FrozenArgumentHolder) -> Any:
+    def getvariant(self: Self, post: FrozenArgumentHolder) -> Any:
         for pre, variant in self.ans.registry.items():
             if ismatch(pre=pre, post=post):
                 return value
         return self.ans.default
 
-    def makeans(self, old: Any) -> Any:
+    def makeans(self: Self, old: Any) -> Any:
         unpack = Unpack.byValue(old)
         ans = tofunc.tofunc(self.ans_1)
         functools.wraps(unpack.func)(ans)
@@ -75,7 +75,7 @@ class Data:
         ans.register = self.makeregister()
         return ans
 
-    def makeregister(self) -> types.FunctionType:
+    def makeregister(self: Self) -> types.FunctionType:
         def register(key: Any):
             return Register(ans=self.ans, key=key)
 
@@ -83,13 +83,13 @@ class Data:
 
 
 class Register:
-    def __call__(self, value: Any) -> Any:
+    def __call__(self: Self, value: Any) -> Any:
         self.ans.registry[self.key] = Unpack.byValue(value).func
         return self.ans
 
-    def __init__(self, ans: Any, /, *args: Any, **kwargs: Any) -> None:
+    def __init__(self: Self, ans: Any, /, *args: Any, **kwargs: Any) -> None:
         self.ans = ans
         self.key = FrozenArgumentHolder(*args, **kwargs)
 
-    def __repr__(self) -> str:
+    def __repr__(self: Self) -> str:
         return datarepr(type(self).__name__, ans=self.ans, key=self.key)
